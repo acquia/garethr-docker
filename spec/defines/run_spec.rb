@@ -168,63 +168,63 @@ require 'spec_helper'
           'remove_container_on_stop' => false,
         }}
         if (systemd)
-          it { should_not contain_file(initscript).with_content(/ExecStartPre=-\/usr\/bin\/docker rm/) }
+          it { should_not contain_file(initscript).with_content(/ExecStartPre=-\/usr\/bin\/docker rm -f/) }
         else
-          it { should_not contain_file(initscript).with_content(/\$docker rm  sample/) }
+          it { should_not contain_file(initscript).with_content(/\$docker rm -f  sample/) }
         end
       end
 
       context 'when removing containers on container start' do
         let(:params) { {'command' => 'command', 'image' => 'base', 'remove_container_on_start' => true} }
         if (systemd)
-          it { should contain_file(initscript).with_content(/ExecStartPre=-\/usr\/bin\/docker rm/) }
+          it { should contain_file(initscript).with_content(/ExecStartPre=-\/usr\/bin\/docker rm -f/) }
         else
-          it { should contain_file(initscript).with_content(/\$docker rm  sample/) }
+          it { should contain_file(initscript).with_content(/\$docker rm -f  sample/) }
         end
       end
 
       context 'when removing containers on container stop' do
         let(:params) { {'command' => 'command', 'image' => 'base', 'remove_container_on_stop' => true} }
         if (systemd)
-          it { should contain_file(initscript).with_content(/ExecStop=-\/usr\/bin\/docker rm/) }
+          it { should contain_file(initscript).with_content(/ExecStop=-\/usr\/bin\/docker rm -f/) }
         else
-          it { should contain_file(initscript).with_content(/\$docker rm  sample/) }
+          it { should contain_file(initscript).with_content(/\$docker rm -f  sample/) }
         end
       end
 
       context 'when not removing volumes on container start' do
         let(:params) { {'command' => 'command', 'image' => 'base', 'remove_volume_on_start' => false} }
         if (systemd)
-          it { should_not contain_file(initscript).with_content(/ExecStartPre=-\/usr\/bin\/docker rm -v/) }
+          it { should_not contain_file(initscript).with_content(/ExecStartPre=-\/usr\/bin\/docker rm -f -v/) }
         else
-          it { should_not contain_file(initscript).with_content(/\$docker rm -v sample/) }
+          it { should_not contain_file(initscript).with_content(/\$docker rm -f -v sample/) }
         end
       end
 
       context 'when removing volumes on container start' do
         let(:params) { {'command' => 'command', 'image' => 'base', 'remove_volume_on_start' => true} }
         if (systemd)
-          it { should contain_file(initscript).with_content(/ExecStartPre=-\/usr\/bin\/docker rm -v/) }
+          it { should contain_file(initscript).with_content(/ExecStartPre=-\/usr\/bin\/docker rm -f -v/) }
         else
-          it { should contain_file(initscript).with_content(/\$docker rm -v/) }
+          it { should contain_file(initscript).with_content(/\$docker rm -f -v/) }
         end
       end
 
       context 'when not removing volumes on container stop' do
         let(:params) { {'command' => 'command', 'image' => 'base', 'remove_volume_on_stop' => false} }
         if (systemd)
-          it { should_not contain_file(initscript).with_content(/ExecStop=-\/usr\/bin\/docker rm -v/) }
+          it { should_not contain_file(initscript).with_content(/ExecStop=-\/usr\/bin\/docker rm -f -v/) }
         else
-          it { should_not contain_file(initscript).with_content(/\$docker rm -v sample/) }
+          it { should_not contain_file(initscript).with_content(/\$docker rm -f -v sample/) }
         end
       end
 
       context 'when removing volumes on container stop' do
         let(:params) { {'command' => 'command', 'image' => 'base', 'remove_volume_on_stop' => true} }
         if (systemd)
-          it { should contain_file(initscript).with_content(/ExecStop=-\/usr\/bin\/docker rm -v/) }
+          it { should contain_file(initscript).with_content(/ExecStop=-\/usr\/bin\/docker rm -f -v/) }
         else
-          it { should contain_file(initscript).with_content(/\$docker rm -v/) }
+          it { should contain_file(initscript).with_content(/\$docker rm -f -v/) }
         end
       end
     end
