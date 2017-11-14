@@ -407,8 +407,9 @@ define docker::run(
         # Compare the running container ID to the images container ID and if they are different then
         # notify the service to restart the container
         exec { "check-image-id-${service_prefix}${sanitised_title}":
+          path    => ['/bin/', '/sbin/', '/usr/bin/', '/usr/sbin/'],
           command => '/bin/true',
-          onlyif  => "/bin/test \"$(${docker_command} inspect -f \'{{.Image}}\' --type container ${sanitised_title})\" != \"$(${docker_command} inspect -f \'{{.Id}}\' --type image ${image})\"",
+          onlyif  => "test \"$(${docker_command} inspect -f \'{{.Image}}\' --type container ${sanitised_title})\" != \"$(${docker_command} inspect -f \'{{.Id}}\' --type image ${image})\"",
           notify  => Service["${service_prefix}${sanitised_title}"],
           require => File[$initscript],
         }
